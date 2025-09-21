@@ -3,144 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Distributor Learning</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-</head>
-<body>
-
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <h2>TelkomDash</h2>
-        <nav>
-            <a href="index.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-            <a href="learning.html" class="active"><i class="fas fa-graduation-cap"></i> Learning</a>
-            <a href="#"><i class="fas fa-users"></i> Forum / Community</a>
-            <a href="feedback.html"><i class="fas fa-poll"></i> Feedback / Survey</a>
-            <a href="products.html"><i class="fas fa-box-open"></i> Product Info / Catalog</a>
-            <a href="#"><i class="fas fa-tags"></i> Promotions</a>
-            <a href="#"><i class="fas fa-user-cog"></i> Account Settings</a>
-            <a href="#"><i class="fas fa-sign-out-alt"></i> Log Out</a>
-        </nav>
-    </aside>
-
-    <!-- Main content -->
-    <main class="main">
-        <header class="navbar">
-            <div class="toggle-btn" id="toggleBtn"><i class="fas fa-bars"></i></div>
-            <input type="text" placeholder="Search courses...">
-        </header>
-
-        <section class="courses-section">
-            <h2>Telkom LEARN Courses</h2>
-            <p class="powered">Powered by <strong>Telkom Learn</strong></p>
-            <div class="courses-grid" id="coursesGrid"></div>
-        </section>
-
-        <!-- Chatbot -->
-       
-    </main>
-
-    <script>
-        // Courses data
-        const courses = [
-            { title: "Telkom Sales Fundamentals", progress: 80, link: "#" },
-            { title: "Data Bundles & Promotions", progress: 40, link: "#" },
-            { title: "Airtime & Recharge Process", progress: 65, link: "#" },
-            { title: "Customer Support Best Practices", progress: 20, link: "#" },
-            { title: "Telkom Product Knowledge", progress: 50, link: "#" }
-        ];
-
-        const coursesGrid = document.getElementById('coursesGrid');
-        courses.forEach(course => {
-            const card = document.createElement('div');
-            card.classList.add('card'); // same class as main dashboard cards
-            card.innerHTML = `
-            <h3>${course.title}</h3>
-            <div class="progress-bar">
-                <div class="progress" style="width:${course.progress}%"></div>
-            </div>
-            <p>${course.progress}% completed</p>
-            <a href="${course.link}" class="view-btn">View Course</a>
-        `;
-            coursesGrid.appendChild(card);
-        });
-
-        // Chatbot
-        const chatWindow = document.getElementById('chatWindow');
-        const chatInput = document.getElementById('chatInput');
-        const sendBtn = document.getElementById('sendBtn');
-
-        sendBtn.addEventListener('click', sendMessage);
-        chatInput.addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
-
-        function sendMessage() {
-            const msg = chatInput.value.trim();
-            if (!msg) return;
-            const userMsg = document.createElement('p'); userMsg.classList.add('user'); userMsg.textContent = msg;
-            chatWindow.appendChild(userMsg); chatInput.value = ''; chatWindow.scrollTop = chatWindow.scrollHeight;
-            setTimeout(() => {
-                const botMsg = document.createElement('p'); botMsg.classList.add('bot');
-                botMsg.textContent = generateReply(msg.toLowerCase());
-                chatWindow.appendChild(botMsg); chatWindow.scrollTop = chatWindow.scrollHeight;
-            }, 500);
-        }
-
-        function generateReply(message) {
-            const greetings = ["Hello! How can I help you today?", "Hi! Ask me about courses or progress."];
-            const help = ["You can view courses and track your progress here."];
-            const unknown = ["Sorry, I didn't understand. Please ask about courses or progress."];
-            if (message.includes("hello") || message.includes("hi")) return greetings[Math.floor(Math.random() * greetings.length)];
-            if (message.includes("course") || message.includes("learning") || message.includes("progress")) return help[Math.floor(Math.random() * help.length)];
-            return unknown[Math.floor(Math.random() * unknown.length)];
-        }
-    </script>
-
+    <title>Telkom Distributor Platform - Learning</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
-        /* Matches main dashboard UI */
-        .courses-section {
-            padding: 20px;
-            background: #fff;
-            border-radius: 12px;
-            margin: 20px;
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background: #f5f8fc;
+            display: flex;
+            min-height: 100vh;
         }
 
-            .courses-section h2 {
+        /* Sidebar */
+        .sidebar {
+            width: 220px;
+            background: #3c8dbc;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 1rem;
+        }
+
+            .sidebar h2 {
+                text-align: center;
+                font-weight: 700;
+                margin-bottom: 2rem;
+            }
+
+            .sidebar a {
+                display: flex;
+                align-items: center;
+                padding: 10px 14px;
+                margin: 6px 0;
+                border-radius: 8px;
+                text-decoration: none;
+                color: #fff;
+                font-weight: 500;
+                font-size: 0.95rem;
+            }
+
+                .sidebar a i {
+                    margin-right: 10px;
+                }
+
+                .sidebar a:hover,
+                .sidebar a.active {
+                    background: rgba(255,255,255,0.2);
+                }
+
+        /* Main */
+        .main {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+            .navbar .welcome {
+                font-weight: 600;
+                font-size: 1.1rem;
+            }
+
+        /* Panels Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin: 1.5rem 2rem;
+            flex: 1 1 auto; /* fill vertical space */
+        }
+
+        /* Panels */
+        .panel {
+            background: #fff;
+            border-radius: 18px;
+            padding: 1.5rem;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            min-height: 0; /* allow flex to shrink */
+            flex: 1 1 auto; /* fill panel space */
+            overflow-y: auto; /* scroll if content too tall */
+        }
+
+            .panel h2 {
+                font-size: 1.2rem;
+                font-weight: 600;
+                margin-bottom: 1rem;
                 color: #3c8dbc;
-                margin-bottom: 15px;
             }
 
-            .courses-section .powered {
-                font-size: 0.9rem;
-                color: #555;
-                margin-bottom: 20px;
-            }
-
+        /* Courses Panel */
         .courses-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+            gap: 15px;
         }
 
-        .card {
-            background: #fff;
-            padding: 15px;
+        .course-card {
+            background: #f9f9f9;
+            padding: 12px;
             border-radius: 12px;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             text-align: center;
         }
 
-            .card h3 {
+            .course-card h4 {
                 color: #3c8dbc;
-                margin-bottom: 10px;
+                margin-bottom: 8px;
             }
 
         .progress-bar {
             width: 100%;
             background: #e2f0fb;
             border-radius: 12px;
-            height: 15px;
-            margin-bottom: 10px;
+            height: 12px;
+            margin-bottom: 8px;
             overflow: hidden;
         }
 
@@ -150,21 +140,131 @@
             border-radius: 12px;
         }
 
-        .view-btn {
-            display: inline-block;
-            padding: 8px 15px;
+        .course-btn {
+            padding: 6px 12px;
             background: #3c8dbc;
             color: #fff;
             border-radius: 12px;
             text-decoration: none;
+            font-size: 0.9rem;
             font-weight: 600;
+            display: inline-block;
+            margin-top: 6px;
             transition: 0.3s;
         }
 
-            .view-btn:hover {
+            .course-btn:hover {
                 background: #5bb1e1;
             }
     </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h2><strong>DISTRIBUTOR</strong> Platform</h2>
+        <a href="index.html"><i class="fa fa-home"></i> Dashboard</a>
+        <a href="learning.html" class="active"><i class="fa fa-graduation-cap"></i> Learning</a>
+        <a href="feedback.html"><i class="fa fa-poll"></i> Feedback</a>
+        <a ><i class="fa fa-sign-out"></i> Log Out</a>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+        <!-- Navbar -->
+        <div class="navbar">
+            <div class="welcome" id="distributor-name">Welcome, <strong>Distributor</strong></div>
+        </div>
+
+        <!-- Panels Grid -->
+        <div class="grid">
+            <!-- Courses Panel -->
+            <div class="panel">
+                <h2>Telkom LEARN Courses</h2>
+                <p class="powered">Powered by <strong>Telkom Learn</strong></p>
+                <input type="text" id="courseSearch" placeholder="Search courses..." style="padding:6px 10px; margin-bottom:10px; border-radius:8px; border:1px solid #ccc; outline:none;">
+                <div class="courses-grid" id="coursesGrid"></div>
+            </div>
+
+            <!-- Chatbot Panel -->
+            <div class="panel">
+                <h2>Learning Assistant</h2>
+                <div id="chat-window" style="flex:1; overflow-y:auto; padding:10px; border:1px solid #ddd; border-radius:12px; background:#f9f9f9;">
+                    <div class="message bot">Hi! Ask me about your courses or progress.</div>
+                </div>
+                <div style="display:flex; margin-top:8px;">
+                    <input type="text" id="chat-input" placeholder="Type a message..." style="flex:1; padding:8px 12px; border-radius:12px; border:1px solid #ccc; outline:none;">
+                    <button id="send-btn" style="margin-left:8px; padding:8px 12px; border:none; border-radius:12px; background:#3c8dbc; color:#fff;">Send</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Mock courses data
+        const courses = [
+            { id: 1, title: "Telkom Product Basics", status: "Not Started" },
+            { id: 2, title: "Effective Sales Techniques", status: "In Progress" },
+            { id: 3, title: "Customer Support & Communication", status: "Completed" }
+        ];
+
+        const coursesGrid = document.getElementById('coursesGrid');
+
+        function renderCourses(filter = "") {
+            coursesGrid.innerHTML = "";
+            courses.filter(c => c.title.toLowerCase().includes(filter.toLowerCase())).forEach(course => {
+                let progress = 0;
+                if (course.status === "Completed") progress = 100;
+                else if (course.status === "In Progress") progress = 50;
+
+                const card = document.createElement('div');
+                card.className = 'course-card';
+                card.innerHTML = `
+                        <h4>${course.title}</h4>
+                        <div class="progress-bar"><div class="progress" style="width:${progress}%"></div></div>
+                        <p>${course.status} (${progress}%)</p>
+                        <a href="#" class="course-btn">${course.status === "Not Started" ? "Start Course" : "Continue"}</a>
+                    `;
+                coursesGrid.appendChild(card);
+            });
+        }
+
+        renderCourses();
+
+        document.getElementById('courseSearch').addEventListener('input', e => {
+            renderCourses(e.target.value);
+        });
+
+        // Chatbot functionality
+        const chatWindow = document.getElementById('chat-window');
+        const chatInput = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-btn');
+
+        sendBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
+
+        function sendMessage() {
+            const msg = chatInput.value.trim();
+            if (!msg) return;
+            const userMsg = document.createElement('div'); userMsg.classList.add('message', 'user'); userMsg.textContent = msg;
+            chatWindow.appendChild(userMsg);
+            chatInput.value = '';
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+
+            setTimeout(() => {
+                const botMsg = document.createElement('div'); botMsg.classList.add('message', 'bot');
+                botMsg.textContent = generateReply(msg.toLowerCase());
+                chatWindow.appendChild(botMsg);
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+            }, 500);
+        }
+
+        function generateReply(message) {
+            if (message.includes("progress") || message.includes("status")) return "You can see your course status and progress in the cards above.";
+            if (message.includes("course") || message.includes("learning")) return "All your learning courses are displayed above. Click 'Start Course' or 'Continue' to open a course.";
+            return "Sorry, I didn't understand. Ask about your courses or progress.";
+        }
+    </script>
 
 </body>
 </html>

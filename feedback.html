@@ -3,300 +3,282 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Distributor Dashboard - Feedback / Survey</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <title>Distributor Surveys</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background: #f5f8fc;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 220px;
+            background: #3c8dbc;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 1rem;
+        }
+
+            .sidebar h2 {
+                text-align: center;
+                font-weight: 700;
+                margin-bottom: 2rem;
+            }
+
+            .sidebar a {
+                display: flex;
+                align-items: center;
+                padding: 10px 14px;
+                margin: 6px 0;
+                border-radius: 8px;
+                text-decoration: none;
+                color: #fff;
+                font-weight: 500;
+                font-size: 0.95rem;
+            }
+
+                .sidebar a i {
+                    margin-right: 10px;
+                }
+
+                .sidebar a:hover, .sidebar a.active {
+                    background: rgba(255,255,255,0.2);
+                }
+
+        /* Main */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+            .navbar .welcome {
+                font-weight: 600;
+                font-size: 1.1rem;
+            }
+
+        /* Survey Section */
+        .survey-section {
+            margin: 1.5rem 2rem;
+            background: #fff;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+        }
+
+            .survey-section h1 {
+                color: #3c8dbc;
+                margin-bottom: 1rem;
+            }
+
+            .survey-section p {
+                color: #555;
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+        .question {
+            margin-bottom: 1.5rem;
+        }
+
+            .question label {
+                display: block;
+                font-weight: 500;
+                margin-bottom: 0.5rem;
+                color: #333;
+            }
+
+            .question input[type="radio"] {
+                margin-right: 6px;
+            }
+
+            .question textarea {
+                width: 100%;
+                min-height: 80px;
+                padding: 8px 12px;
+                border-radius: 12px;
+                border: 1px solid #ccc;
+                resize: vertical;
+                font-family: 'Poppins', sans-serif;
+                font-size: 0.95rem;
+            }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 1rem;
+        }
+
+            .buttons button {
+                padding: 10px 18px;
+                border: none;
+                border-radius: 12px;
+                cursor: pointer;
+                font-weight: 600;
+                font-size: 0.95rem;
+            }
+
+        .submit-btn {
+            background: #3c8dbc;
+            color: #fff;
+        }
+
+        .cancel-btn {
+            background: #e0f0fb;
+            color: #333;
+        }
+
+        .confirmation {
+            margin-top: 1rem;
+            padding: 12px;
+            background: #d4edda;
+            color: #155724;
+            border-radius: 12px;
+            display: none;
+            font-weight: 500;
+        }
+    </style>
 </head>
 <body>
 
     <!-- Sidebar -->
     <aside class="sidebar">
-        <h2>TelkomDash</h2>
-        <nav>
-            <a href="index.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-            <a href="learning.html"><i class="fas fa-graduation-cap"></i> Learning</a>
-            <a href="#"><i class="fas fa-users"></i> Forum / Community</a>
-            <a href="#"><i class="fas fa-poll"></i> Feedback / Survey</a>
-            <a href="#"><i class="fas fa-box-open"></i> Product Info / Catalog</a>
-            <a href="#"><i class="fas fa-tags"></i> Promotions</a>
-            <a href="#"><i class="fas fa-user-cog"></i> Account Settings</a>
-            <a href="#"><i class="fas fa-sign-out-alt"></i> Log Out</a>
-        </nav>
+        <h2><span style="font-weight:bold;">DISTRIBUTOR</span> <span style="font-weight:normal; margin-left:2px;">Platform</span></h2>
+        <a href="index.html"><i class="fa fa-home"></i> Dashboard</a>
+        <a href="learning.html"><i class="fa fa-graduation-cap"></i> Learning</a>
+        <a href="feedback.html" class="active"><i class="fa fa-poll"></i> Surveys</a>
+        <a href=""><i class="fa fa-sign-out"></i> Log Out</a>
     </aside>
 
-    <!-- Main content -->
+    <!-- Main -->
     <main class="main">
-        <header class="navbar">
-            <div class="toggle-btn" id="toggleBtn"><i class="fas fa-bars"></i></div>
-            <input type="text" placeholder="Search surveys or feedback...">
-        </header>
+        <div class="navbar">
+            <div class="welcome" id="distributor-name">Welcome, <strong>Distributor</strong></div>
+        </div>
 
-        <section class="survey-section">
-            <h2>Feedback / Survey</h2>
+        <div class="survey-section">
+            <h1>📋 Monthly Distributor Feedback Survey</h1>
+            <p>Please answer the questions below. Your feedback is valuable!</p>
 
-            <!-- Tabs -->
-            <div class="tabs">
-                <button class="tab-btn active" data-tab="monthly">Monthly Feedback Forms</button>
-                <button class="tab-btn" data-tab="submission">Feedback Submission</button>
-                <button class="tab-btn" data-tab="history">Survey History</button>
+            <form id="survey-form">
+                <!-- Questions will be dynamically inserted here -->
+            </form>
+
+            <div class="buttons">
+                <button class="submit-btn" id="submit-survey">Submit</button>
+                <button class="cancel-btn" id="cancel-survey">Cancel</button>
             </div>
 
-            <!-- Tab Contents -->
-            <div class="tab-content active" id="monthly">
-                <form id="monthlyForm">
-                    <label>1. How satisfied are you with Telkom product availability?</label>
-                    <div class="options">
-                        <label><input type="radio" name="q1" value="Very Satisfied" required> Very Satisfied</label>
-                        <label><input type="radio" name="q1" value="Satisfied"> Satisfied</label>
-                        <label><input type="radio" name="q1" value="Neutral"> Neutral</label>
-                        <label><input type="radio" name="q1" value="Dissatisfied"> Dissatisfied</label>
-                    </div>
-
-                    <label>2. How often do you face delays in communication?</label>
-                    <div class="options">
-                        <label><input type="radio" name="q2" value="Never" required> Never</label>
-                        <label><input type="radio" name="q2" value="Rarely"> Rarely</label>
-                        <label><input type="radio" name="q2" value="Sometimes"> Sometimes</label>
-                        <label><input type="radio" name="q2" value="Often"> Often</label>
-                    </div>
-
-                    <label>3. Improvements you would like to see? (Select all that apply)</label>
-                    <div class="options">
-                        <label><input type="checkbox" name="q3" value="Better stock updates"> Better stock updates</label>
-                        <label><input type="checkbox" name="q3" value="Faster communication"> Faster communication</label>
-                        <label><input type="checkbox" name="q3" value="More promotions"> More promotions</label>
-                        <label><input type="checkbox" name="q3" value="Additional training resources"> Additional training resources</label>
-                    </div>
-
-                    <label>4. Additional comments:</label>
-                    <textarea name="q4" placeholder="Write your thoughts here..."></textarea>
-
-                    <button type="submit">Submit Feedback</button>
-                </form>
+            <div class="confirmation" id="confirmation-message">
+                ✅ Thank you for your feedback!
             </div>
-
-            <div class="tab-content" id="submission">
-                <form id="submissionForm">
-                    <label>Full Name</label>
-                    <input type="text" id="name" required placeholder="Enter your name">
-
-                    <label>Email</label>
-                    <input type="email" id="email" required placeholder="Enter your email">
-
-                    <label>Feedback</label>
-                    <textarea id="feedback" required placeholder="Your feedback here..."></textarea>
-
-                    <button type="submit">Submit Feedback</button>
-                </form>
-            </div>
-
-            <div class="tab-content" id="history">
-                <h3>Survey History</h3>
-                <div id="historyList">
-                    <!-- Submitted feedbacks appear here -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Chatbot -->
-
+        </div>
     </main>
 
     <script>
-        // Tab functionality
-        const tabBtns = document.querySelectorAll('.tab-btn');
-        const tabContents = document.querySelectorAll('.tab-content');
+        // Mock JSON data source
+        const surveyData = {
+            "survey": {
+                "questions": [
+                    {
+                        "id": 1,
+                        "type": "rating",
+                        "question": "How satisfied are you with product updates this month?"
+                    },
+                    {
+                        "id": 2,
+                        "type": "text",
+                        "question": "What improvements would you like to see?"
+                    }
+                ]
+            }
+        };
 
-        tabBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                tabBtns.forEach(b => b.classList.remove('active'));
-                tabContents.forEach(c => c.classList.remove('active'));
-                btn.classList.add('active');
-                document.getElementById(btn.dataset.tab).classList.add('active');
-            });
+        // Dynamically render survey questions
+        const surveyForm = document.getElementById('survey-form');
+
+        surveyData.survey.questions.forEach(q => {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question';
+
+            const label = document.createElement('label');
+            label.textContent = q.question;
+            questionDiv.appendChild(label);
+
+            if (q.type === 'rating') {
+                const ratingDiv = document.createElement('div');
+                for (let i = 1; i <= 5; i++) {
+                    const radio = document.createElement('input');
+                    radio.type = 'radio';
+                    radio.name = `q${q.id}`;
+                    radio.value = i;
+                    const radioLabel = document.createElement('label');
+                    radioLabel.appendChild(radio);
+                    radioLabel.appendChild(document.createTextNode(` ${i}`));
+                    ratingDiv.appendChild(radioLabel);
+                }
+                questionDiv.appendChild(ratingDiv);
+            } else if (q.type === 'text') {
+                const textarea = document.createElement('textarea');
+                textarea.name = `q${q.id}`;
+                textarea.placeholder = "Type your feedback here...";
+                questionDiv.appendChild(textarea);
+            }
+
+            surveyForm.appendChild(questionDiv);
         });
 
-        // Monthly feedback form
-        const monthlyForm = document.getElementById('monthlyForm');
-        const historyList = document.getElementById('historyList');
+        // Buttons
+        const submitBtn = document.getElementById('submit-survey');
+        const cancelBtn = document.getElementById('cancel-survey');
+        const confirmationMsg = document.getElementById('confirmation-message');
 
-        monthlyForm.addEventListener('submit', e => {
-            e.preventDefault();
-            const formData = new FormData(monthlyForm);
-            const response = {};
-            formData.forEach((value, key) => {
-                if (response[key]) {
-                    response[key] = Array.isArray(response[key]) ? [...response[key], value] : [response[key], value];
+        submitBtn.addEventListener('click', () => {
+            const responses = {};
+            surveyData.survey.questions.forEach(q => {
+                if (q.type === 'rating') {
+                    responses[`q${q.id}`] = document.querySelector(`input[name="q${q.id}"]:checked`)?.value || null;
                 } else {
-                    response[key] = value;
+                    responses[`q${q.id}`] = document.querySelector(`textarea[name="q${q.id}"]`).value.trim();
                 }
             });
-            addToHistory(response);
-            monthlyForm.reset();
-        });
 
-        // Feedback submission form
-        const submissionForm = document.getElementById('submissionForm');
-        submissionForm.addEventListener('submit', e => {
-            e.preventDefault();
-            const name = document.getElementById('name').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const feedback = document.getElementById('feedback').value.trim();
-            if (name && email && feedback) {
-                addToHistory({ q1: name, q2: email, q3: [feedback] });
-                submissionForm.reset();
+            // Simple validation: ensure ratings are selected
+            if (surveyData.survey.questions.some(q => q.type === 'rating' && !responses[`q${q.id}`])) {
+                alert('Please answer all rating questions.');
+                return;
             }
+
+            console.log('Survey responses:', responses);
+
+            // Optionally: write to Firebase
+            // firebase.database().ref('surveys').push(responses);
+
+            confirmationMsg.style.display = 'block';
         });
 
-        // Add feedback to history
-        function addToHistory(response) {
-            const card = document.createElement('div');
-            card.classList.add('feedback-item');
-            card.innerHTML = `
-            <p><strong>Full Name:</strong> ${response.q1}</p>
-            <p><strong>Email / Q2:</strong> ${response.q2}</p>
-            <p><strong>Feedback / Q3:</strong> ${response.q3 ? response.q3.join ? response.q3.join(', ') : response.q3 : ''}</p>
-            <p><strong>Additional Comments / Q4:</strong> ${response.q4 || 'N/A'}</p>
-        `;
-            historyList.prepend(card);
-        }
-
-        // Chatbot functionality
-        const chatWindow = document.getElementById('chatWindow');
-        const chatInput = document.getElementById('chatInput');
-        const sendBtn = document.getElementById('sendBtn');
-
-        sendBtn.addEventListener('click', sendMessage);
-        chatInput.addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
-
-        function sendMessage() {
-            const msg = chatInput.value.trim();
-            if (!msg) return;
-
-            const userMsg = document.createElement('p');
-            userMsg.classList.add('user');
-            userMsg.textContent = msg;
-            chatWindow.appendChild(userMsg);
-            chatInput.value = '';
-            chatWindow.scrollTop = chatWindow.scrollHeight;
-
-            setTimeout(() => {
-                const botMsg = document.createElement('p');
-                botMsg.classList.add('bot');
-                botMsg.textContent = generateReply(msg.toLowerCase());
-                chatWindow.appendChild(botMsg);
-                chatWindow.scrollTop = chatWindow.scrollHeight;
-            }, 500);
-        }
-
-        function generateReply(message) {
-            const greetings = ["Hello! How can I help you today?", "Hi! Ask me about promotions or data bundles.", "Hey! How can I assist?"];
-            const feedbacks = ["You can fill out the survey above.", "Submit your feedback and we will process it."];
-            const help = ["I can help with promotions, data, airtime, or training resources."];
-            const unknown = ["Sorry, I didn't understand. Please ask about promotions, data, or airtime."];
-
-            if (message.includes("hello") || message.includes("hi")) return greetings[Math.floor(Math.random() * greetings.length)];
-            if (message.includes("feedback") || message.includes("survey")) return feedbacks[Math.floor(Math.random() * feedbacks.length)];
-            if (message.includes("help")) return help[Math.floor(Math.random() * help.length)];
-            return unknown[Math.floor(Math.random() * unknown.length)];
-        }
+        cancelBtn.addEventListener('click', () => {
+            surveyForm.reset();
+            confirmationMsg.style.display = 'none';
+        });
     </script>
-
-    <style>
-        /* Survey / Feedback styles consistent with dashboard */
-        .survey-section {
-            padding: 20px;
-            background: #f7faff;
-            border-radius: 15px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.05);
-            margin: 20px;
-        }
-
-            .survey-section h2 {
-                color: #3c8dbc;
-                margin-bottom: 15px;
-            }
-
-        .tabs {
-            display: flex;
-            margin-bottom: 20px;
-        }
-
-        .tab-btn {
-            flex: 1;
-            padding: 10px;
-            background: #e2f0fb;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.3s;
-            border-radius: 12px 12px 0 0;
-            margin-right: 5px;
-        }
-
-            .tab-btn.active {
-                background: #3c8dbc;
-                color: #fff;
-            }
-
-        .tab-content {
-            display: none;
-            background: #f7faff;
-            padding: 15px;
-            border-radius: 0 0 12px 12px;
-        }
-
-            .tab-content.active {
-                display: block;
-            }
-
-        .survey-section label {
-            display: block;
-            margin: 10px 0 5px;
-            font-weight: 500;
-        }
-
-        .survey-section input[type="text"], .survey-section input[type="email"], .survey-section textarea {
-            width: 100%;
-            padding: 10px 15px;
-            border-radius: 12px;
-            border: 1px solid #ccc;
-            outline: none;
-            margin-bottom: 15px;
-            font-family: 'Poppins',sans-serif;
-        }
-
-        .survey-section input[type="radio"], .survey-section input[type="checkbox"] {
-            margin-right: 10px;
-        }
-
-        .survey-section .options {
-            margin-bottom: 15px;
-        }
-
-        .survey-section button {
-            padding: 10px 20px;
-            background: #3c8dbc;
-            color: #fff;
-            border: none;
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-            .survey-section button:hover {
-                background: #5bb1e1;
-            }
-
-        .feedback-item {
-            background: #fff;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-    </style>
 
 </body>
 </html>

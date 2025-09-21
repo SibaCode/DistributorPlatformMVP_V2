@@ -1,0 +1,61 @@
+{
+  "sales": {
+    "monthly": 15000,
+    "weekly": 5000
+  },
+  "distributorName": "Innocentia",
+  "courses": [
+    {
+      "id": 1,
+      "title": "Telkom Product Basics",
+      "status": "Not Started"
+    },
+    {
+      "id": 2,
+      "title": "Effective Sales Techniques",
+      "status": "In Progress"
+    },
+    {
+      "id": 3,
+      "title": "Customer Support & Communication",
+      "status": "Completed"
+    }
+  ],
+  "survey": {
+    "questions": [
+      {
+        "id": 1,
+        "type": "rating",
+        "question": "How satisfied are you with product updates this month?"
+      },
+      {
+        "id": 2,
+        "type": "text",
+        "question": "What improvements would you like to see?"
+      }
+    ]
+  },
+  "promotions": {
+    "activePromotions": 3,
+    "promotionDetails": [
+      {
+        "id": 1,
+        "name": "50% OFF on Select Items",
+        "startDate": "2025-09-01",
+        "endDate": "2025-09-30"
+      },
+      {
+        "id": 2,
+        "name": "Buy 1 Get 1 Free",
+        "startDate": "2025-09-10",
+        "endDate": "2025-09-20"
+      },
+      {
+        "id": 3,
+        "name": "Free Shipping on Orders Over $100",
+        "startDate": "2025-09-15",
+        "endDate": "2025-09-25"
+      }
+    ]
+  },
+}
