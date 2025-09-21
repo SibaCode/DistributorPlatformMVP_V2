@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products & Promotions</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h2>TelkomDash</h2>
+        <nav>
+            <a href="index.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="learning.html"><i class="fas fa-graduation-cap"></i> Learning</a>
+            <a href="#"><i class="fas fa-users"></i> Forum / Community</a>
+            <a href="feedback.html"><i class="fas fa-poll"></i> Feedback / Survey</a>
+            <a href="products.html" class="active"><i class="fas fa-box-open"></i> Product Info / Catalog</a>
+            <a href="#"><i class="fas fa-tags"></i> Promotions</a>
+            <a href="#"><i class="fas fa-user-cog"></i> Account Settings</a>
+            <a href="#"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+        </nav>
+    </aside>
+
+    <!-- Main content -->
+    <main class="main">
+        <header class="navbar">
+            <div class="toggle-btn" id="toggleBtn"><i class="fas fa-bars"></i></div>
+            <input type="text" id="searchInput" placeholder="Search products or promotions...">
+        </header>
+
+        <section class="products-section">
+            <h2>Products & Promotions</h2>
+            <div class="products-grid" id="productsGrid"></div>
+        </section>
+
+        <!-- Chatbot -->
+     
+    </main>
+
+    <script>
+        // Products data
+        const products = [
+            { name: "Telkom SIM Card", price: "$10", description: "Prepaid SIM card with 5GB data.", category: "SIM Card", promotion: true, image: "https://via.placeholder.com/150" },
+            { name: "Data Bundle 5GB", price: "$15", description: "Valid for 30 days, nationwide use.", category: "Data", promotion: false, image: "https://via.placeholder.com/150" },
+            { name: "Airtime Recharge $20", price: "$20", description: "Top-up your Telkom account.", category: "Airtime", promotion: true, image: "https://via.placeholder.com/150" },
+            { name: "Telkom LTE Router", price: "$120", description: "High-speed LTE router.", category: "Device", promotion: false, image: "https://via.placeholder.com/150" },
+            { name: "Telkom Phone", price: "$180", description: "Smartphone with 4GB RAM and 64GB Storage.", category: "Device", promotion: true, image: "https://via.placeholder.com/150" }
+        ];
+
+        const productsGrid = document.getElementById('productsGrid');
+
+        function displayProducts(list) {
+            productsGrid.innerHTML = '';
+            list.forEach(prod => {
+                const card = document.createElement('div');
+                card.classList.add('card'); // matches dashboard UI
+                card.innerHTML = `
+                <img src="${prod.image}" alt="${prod.name}">
+                <h3>${prod.name}</h3>
+                <p class="category">${prod.category}</p>
+                <p class="description">${prod.description}</p>
+                <p class="price">${prod.price}</p>
+                ${prod.promotion ? '<span class="promo-badge">Promotion</span>' : ''}
+            `;
+                productsGrid.appendChild(card);
+            });
+        }
+
+        // Initial display
+        displayProducts(products);
+
+        // Search/filter functionality
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.toLowerCase();
+            const filtered = products.filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
+            displayProducts(filtered);
+        });
+
+        // Chatbot
+        const chatWindow = document.getElementById('chatWindow');
+        const chatInput = document.getElementById('chatInput');
+        const sendBtn = document.getElementById('sendBtn');
+
+        sendBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
+
+        function sendMessage() {
+            const msg = chatInput.value.trim();
+            if (!msg) return;
+            const userMsg = document.createElement('p'); userMsg.classList.add('user'); userMsg.textContent = msg;
+            chatWindow.appendChild(userMsg); chatInput.value = ''; chatWindow.scrollTop = chatWindow.scrollHeight;
+            setTimeout(() => {
+                const botMsg = document.createElement('p'); botMsg.classList.add('bot');
+                botMsg.textContent = generateReply(msg.toLowerCase());
+                chatWindow.appendChild(botMsg); chatWindow.scrollTop = chatWindow.scrollHeight;
+            }, 500);
+        }
+
+        function generateReply(message) {
+            const greetings = ["Hello! How can I help you today?", "Hi! Ask me about products or promotions."];
+            const help = ["You can browse products and check promotions here."];
+            const unknown = ["Sorry, I didn't understand. Please ask about products or promotions."];
+            if (message.includes("hello") || message.includes("hi")) return greetings[Math.floor(Math.random() * greetings.length)];
+            if (message.includes("product") || message.includes("promotion")) return help[Math.floor(Math.random() * help.length)];
+            return unknown[Math.floor(Math.random() * unknown.length)];
+        }
+    </script>
+
+    <style>
+        .products-section {
+            padding: 25px;
+            background: #fff;
+            border-radius: 12px;
+            margin: 20px;
+        }
+
+            .products-section h2 {
+                color: #3c8dbc;
+                margin-bottom: 20px;
+            }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: #fff;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            position: relative;
+        }
+
+            .card img {
+                width: 100%;
+                border-radius: 12px;
+                margin-bottom: 10px;
+            }
+
+            .card h3 {
+                color: #3c8dbc;
+                margin-bottom: 5px;
+            }
+
+            .card .category {
+                font-size: 0.9rem;
+                color: #555;
+                margin-bottom: 5px;
+            }
+
+            .card .description {
+                font-size: 0.9rem;
+                color: #666;
+                margin-bottom: 10px;
+            }
+
+            .card .price {
+                font-weight: 600;
+                margin-bottom: 10px;
+            }
+
+            .card .promo-badge {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background: #ff6b6b;
+                color: #fff;
+                padding: 5px 10px;
+                border-radius: 12px;
+                font-size: 0.8rem;
+                font-weight: 600;
+            }
+
+        #searchInput {
+            width: 100%;
+            padding: 10px 15px;
+            border-radius: 12px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            font-family: 'Poppins',sans-serif;
+        }
+    </style>
+
+</body>
+</html>
