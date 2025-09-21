@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sidebar Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h2>BrandDash</h2>
+        <a href="#"><i class="fas fa-home"></i>Home</a>
+        <a href="#"><i class="fas fa-chart-line"></i>Analytics</a>
+        <a href="#"><i class="fas fa-users"></i>Users</a>
+        <a href="#"><i class="fas fa-cog"></i>Settings</a>
+        <a href="#"><i class="fas fa-sign-out-alt"></i>Logout</a>
+    </aside>
+
+    <!-- Main content -->
+    <main class="main">
+        <!-- Navbar -->
+        <header class="navbar">
+            <div class="toggle-btn" id="toggleBtn"><i class="fas fa-bars"></i></div>
+            <input type="text" placeholder="Search...">
+        </header>
+
+        <!-- Cards -->
+        <section class="cards">
+            <div class="card">
+                <h3>Total Users</h3>
+                <p class="counter" data-target="1245">0</p>
+            </div>
+            <div class="card">
+                <h3>Revenue</h3>
+                <p class="counter" data-target="12430">0</p>
+            </div>
+            <div class="card">
+                <h3>Orders</h3>
+                <p class="counter" data-target="345">0</p>
+            </div>
+            <div class="card">
+                <h3>Feedbacks</h3>
+                <p class="counter" data-target="123">0</p>
+            </div>
+        </section>
+
+        <!-- Charts & Notifications -->
+        <section class="section">
+            <div class="chart">
+                <canvas id="revenueChart"></canvas>
+            </div>
+            <div class="notifications">
+                <h3>Notifications</h3>
+                <ul>
+                    <li><span>New user registered</span> <i class="fas fa-user-plus"></i></li>
+                    <li><span>Order #345 completed</span> <i class="fas fa-check-circle"></i></li>
+                    <li><span>Server backup successful</span> <i class="fas fa-server"></i></li>
+                    <li><span>New feedback received</span> <i class="fas fa-comment-alt"></i></li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
