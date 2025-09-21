@@ -3,87 +3,288 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Distributor Dashboard</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <title>Telkom Distributor Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background: #f5f8fc;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 220px;
+            background: #3c8dbc;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 1rem;
+        }
+
+            .sidebar h2 {
+                text-align: center;
+                font-weight: 700;
+                margin-bottom: 2rem;
+            }
+
+            .sidebar a {
+                display: flex;
+                align-items: center;
+                padding: 10px 14px;
+                margin: 6px 0;
+                border-radius: 8px;
+                text-decoration: none;
+                color: #fff;
+                font-weight: 500;
+                font-size: 0.95rem;
+            }
+
+                .sidebar a i {
+                    margin-right: 10px;
+                }
+
+                .sidebar a:hover, .sidebar a.active {
+                    background: rgba(255,255,255,0.2);
+                }
+
+        /* Main */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+            .navbar .welcome {
+                font-weight: 600;
+                font-size: 1.1rem;
+            }
+
+            .navbar .search input {
+                padding: 8px 14px;
+                border-radius: 12px;
+                border: 1px solid #ddd;
+                outline: none;
+                font-family: inherit;
+            }
+
+        /* Welcome Section */
+        .welcome-section {
+            background: linear-gradient(135deg,#f0f8ff,#e0f0fb);
+            border-radius: 20px;
+            margin: 1.5rem 2rem;
+            padding: 2rem;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+        }
+
+            .welcome-section h1 {
+                color: #3c8dbc;
+                margin-bottom: 0.5rem;
+            }
+
+            .welcome-section p {
+                color: #555;
+                font-size: 1rem;
+            }
+
+        /* Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 2rem;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 18px;
+            padding: 1.5rem;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+            text-align: center;
+            transition: 0.3s;
+        }
+
+            .card:hover {
+                transform: translateY(-5px);
+            }
+
+            .card i {
+                font-size: 1.5rem;
+                margin-bottom: 10px;
+                color: #3c8dbc;
+            }
+
+            .card h3 {
+                font-size: 1.5rem;
+                font-weight: 700;
+                margin-bottom: 4px;
+            }
+
+            .card p {
+                color: #666;
+                font-size: 0.95rem;
+            }
+
+        /* Panels */
+        .grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin: 1.5rem 2rem;
+        }
+
+        .panel {
+            background: #fff;
+            border-radius: 18px;
+            padding: 1.5rem;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+        }
+
+            .panel h2 {
+                font-size: 1.2rem;
+                font-weight: 600;
+                margin-bottom: 1rem;
+                color: #3c8dbc;
+            }
+
+        .promos li {
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+    </style>
 </head>
 <body>
 
     <!-- Sidebar -->
-    <!-- Sidebar -->
     <aside class="sidebar">
-        <h2>TelkomDash</h2>
-        <nav>
-            <a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-            <a href="learning.html"><i class="fas fa-graduation-cap"></i> Learning</a>
-            <a href="#"><i class="fas fa-users"></i> Forum / Community</a>
-            <a href="#"><i class="fas fa-poll"></i> Feedback / Survey</a>
-            <a href="#"><i class="fas fa-box-open"></i> Product Info / Catalog</a>
-            <a href="#"><i class="fas fa-tags"></i> Promotions</a>
-            <a href="#"><i class="fas fa-user-cog"></i> Account Settings</a>
-            <a href="#"><i class="fas fa-sign-out-alt"></i> Log Out</a>
-        </nav>
+        <h2 style="line-height: 1; font-family: 'Poppins', sans-serif;">
+            <span style="font-weight: bold; font-size: 1em;">DISTRIBUTOR</span>
+            <span style="font-weight: normal; font-size: 1em; margin-left: 2px;">Platform</span>
+        </h2>
+
+        <a href="#" class="active"><i class="fa fa-home"></i> Dashboard</a>
+        <a href="#"><i class="fa fa-graduation-cap"></i> Learning</a>
+        <a href="#"><i class="fa fa-users"></i> Community</a>
+        <a href="#"><i class="fa fa-poll"></i> Feedback</a>
+        <a href="#"><i class="fa fa-box"></i> Products</a>
+        <a href="#"><i class="fa fa-tags"></i> Promotions</a>
+        <a href="#"><i class="fa fa-cog"></i> Settings</a>
+        <a href="#"><i class="fa fa-sign-out"></i> Log Out</a>
     </aside>
 
-
-    <!-- Main content -->
+    <!-- Main -->
     <main class="main">
         <!-- Navbar -->
-        <header class="navbar">
-            <div class="toggle-btn" id="toggleBtn"><i class="fas fa-bars"></i></div>
-            <input type="text" placeholder="Search products or promotions...">
-        </header>
+        <div class="navbar">
+            <div class="welcome" id="distributor-name">Welcome, <strong></strong></div>
+        </div>
 
-        <!-- Cards -->
-        <section class="cards">
+        <!-- Welcome / Instructions -->
+        <div class="welcome-section">
+            <h1>👋 Welcome to Telkom Distributor Platform</h1>
+            <p>Here you can check new promotions, access products, submit feedback, and track learning progress. Use the sidebar to navigate through the platform.</p>
+        </div>
+
+        <!-- Statistic Cards -->
+        <div class="cards">
+            <div class="card"><i class="fa fa-line-chart"></i><h3 id="monthly-sales-value"></h3><p>Monthly Sales</p></div>
+            <div class="card"><i class="fa fa-bar-chart"></i><h3 id="weekly-sales-value"></h3><p>Weekly Sales</p></div>
             <div class="card">
-                <h3>Total Products</h3>
-                <p  data-target="320">0</p>
+                <i class="fa fa-tags"></i><h3 id="active-promotions-value"></h3><p>Active Promotions</p>
+                <ul id="promotion-names" class="promos"></ul>
             </div>
-            <div class="card">
-                <h3>New Promotions</h3>
-                <p  data-target="12">0</p>
-            </div>
-            <div class="card">
-                <h3>Unread Messages</h3>
-                <p  data-target="5">0</p>
-            </div>
-            <div class="card">
-                <h3>Feedbacks</h3>
-                <p  data-target="34">0</p>
-            </div>
-        </section>
+            <div class="card"><i class="fa fa-tasks"></i><h3 id="survey-status-value"></h3><p>Surveys Due</p></div>
+        </div>
 
-        <!-- Promotions & Chatbot -->
-        <section class="section">
-            <!-- Promotions list -->
-            <!-- Promotions list -->
-            <div class="promotions">
-                <h3>Recently Added Products</h3>
-                <div class="promotion-grid" id="promotionList">
-                    <!-- Dynamic product cards added by JS -->
-                </div>
+        <!-- Chart + Promotions -->
+        <div class="grid">
+            <div class="panel">
+                <h2>Sales Overview</h2>
+                <canvas id="salesChart"></canvas>
             </div>
-
-
-            <!-- Chatbot -->
-            <!-- Chatbot -->
-            <div class="chatbot">
-                <div class="chat-header">
-                    <div class="chat-title"><i class="fas fa-robot"></i> Distributor Assistant</div>
-                    <div class="chat-status">Online</div>
-                </div>
-                <div class="chat-window" id="chatWindow"></div>
-                <div class="chat-input">
-                    <input type="text" id="chatInput" placeholder="Ask me about promotions, data, or airtime...">
-                    <button id="sendBtn"><i class="fas fa-paper-plane"></i></button>
-                </div>
+            <div class="panel">
+                <h2>Recent Promotions</h2>
+                <ul id="promotion-names-list" class="promos"></ul>
             </div>
-
-        </section>
+        </div>
     </main>
 
-    <script src="script.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyD3XCHkvMkO5W_hyvntnEuGLqGLMG650uo",
+            authDomain: "hackathonmvp-c888d.firebaseapp.com",
+            databaseURL: "https://hackathonmvp-c888d-default-rtdb.firebaseio.com",
+            projectId: "hackathonmvp-c888d",
+            storageBucket: "hackathonmvp-c888d.appspot.com",
+            messagingSenderId: "638041821853",
+            appId: "1:638041821853:web:53e318afd5e53ff19e3a74"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const rootRef = db.ref('/');
+
+        // Chart setup
+        const ctx = document.getElementById('salesChart').getContext('2d');
+        const salesChart = new Chart(ctx, {
+            type: 'line',
+            data: { labels: [], datasets: [{ label: 'Sales', data: [], borderColor: '#3c8dbc', backgroundColor: 'rgba(60,141,188,0.15)', fill: true, tension: 0.4 }] },
+            options: { plugins: { legend: { labels: { color: '#333' } } }, scales: { x: { ticks: { color: '#555' } }, y: { ticks: { color: '#555' } } } }
+        });
+
+        // Fetch data from Firebase
+        rootRef.on('value', snapshot => {
+            const data = snapshot.val();
+            if (!data) return;
+
+            // Update cards
+            //document.getElementById('monthly-sales-value').innerText = `${data.sales?.monthly || 0}`;
+            //document.getElementById('weekly-sales-value').innerText = `${data.sales?.weekly || 0}`;
+            //document.getElementById('active-promotions-value').innerText = data.promotions?.activePromotions || 0;
+            //document.getElementById('survey-status-value').innerText = data.survey?.due || 0;
+            // Update cards
+            document.getElementById('monthly-sales-value').innerText = `${data.sales?.monthly || 0}`;
+            document.getElementById('weekly-sales-value').innerText = `${data.sales?.weekly || 0}`;
+
+            // Show only the active promotions number
+            document.getElementById('active-promotions-value').innerText = data.promotions?.activePromotions || 0;
+
+            // Surveys
+            document.getElementById('survey-status-value').innerText = data.survey?.due || 0;
+            document.getElementById('distributor-name').innerHTML = `Welcome, <strong>${data.distributorName || 'Distributor'}</strong>`;
+
+            // Update promotions panel to show only the number
+            document.getElementById('promotion-names-list').innerText = data.promotions?.activePromotions || 0;
+
+
+            // Update sales chart
+            if (data.sales?.chartData?.length) {
+                salesChart.data.labels = data.sales.chartData.map(d => d.month);
+                salesChart.data.datasets[0].data = data.sales.chartData.map(d => d.amount);
+                salesChart.update();
+            }
+        });
+    </script>
+
 </body>
 </html>

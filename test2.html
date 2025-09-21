@@ -3,22 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Distributor Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <title>Telkom Distributor Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
         body {
-            font-family: 'Poppins',sans-serif;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
             background: #f5f8fc;
-            color: #2d3436;
             display: flex;
             min-height: 100vh;
         }
@@ -49,12 +46,10 @@
                 color: #fff;
                 font-weight: 500;
                 font-size: 0.95rem;
-                transition: 0.3s;
             }
 
                 .sidebar a i {
                     margin-right: 10px;
-                    font-weight: 300;
                 }
 
                 .sidebar a:hover, .sidebar a.active {
@@ -73,7 +68,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.5rem 2rem;
+            padding: 1rem 2rem;
             background: #fff;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
@@ -181,14 +176,14 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <h2>TelkomDash</h2>
-        <a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a>
-        <a href="#"><i class="fas fa-graduation-cap"></i> Learning</a>
-        <a href="#"><i class="fas fa-users"></i> Community</a>
-        <a href="#"><i class="fas fa-poll"></i> Feedback</a>
-        <a href="#"><i class="fas fa-box"></i> Products</a>
-        <a href="#"><i class="fas fa-tags"></i> Promotions</a>
-        <a href="#"><i class="fas fa-cog"></i> Settings</a>
-        <a href="#"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+        <a href="#" class="active"><i class="fa fa-home"></i> Dashboard</a>
+        <a href="#"><i class="fa fa-graduation-cap"></i> Learning</a>
+        <a href="#"><i class="fa fa-users"></i> Community</a>
+        <a href="#"><i class="fa fa-poll"></i> Feedback</a>
+        <a href="#"><i class="fa fa-box"></i> Products</a>
+        <a href="#"><i class="fa fa-tags"></i> Promotions</a>
+        <a href="#"><i class="fa fa-cog"></i> Settings</a>
+        <a href="#"><i class="fa fa-sign-out"></i> Log Out</a>
     </aside>
 
     <!-- Main -->
@@ -202,15 +197,18 @@
         <!-- Welcome / Instructions -->
         <div class="welcome-section">
             <h1>👋 Welcome to Telkom Dashboard</h1>
-            <p>Here you can check new promotions, access products, submit feedback, and track learning progress. Use the sidebar to navigate through the platform. Stay up-to-date with the latest Telkom offerings!</p>
+            <p>Here you can check new promotions, access products, submit feedback, and track learning progress. Use the sidebar to navigate through the platform.</p>
         </div>
 
         <!-- Statistic Cards -->
         <div class="cards">
-            <div class="card"><i class="fas fa-box"></i><h3>320</h3><p>Products</p></div>
-            <div class="card"><i class="fas fa-bullhorn"></i><h3>12</h3><p>Promotions</p></div>
-            <div class="card"><i class="fas fa-user"></i><h3>1,024</h3><p>Users</p></div>
-            <div class="card"><i class="fas fa-comments"></i><h3>45</h3><p>Feedbacks</p></div>
+            <div class="card"><i class="fa fa-line-chart"></i><h3 id="monthly-sales-value">$0</h3><p>Monthly Sales</p></div>
+            <div class="card"><i class="fa fa-bar-chart"></i><h3 id="weekly-sales-value">$0</h3><p>Weekly Sales</p></div>
+            <div class="card">
+                <i class="fa fa-tags"></i><h3 id="active-promotions-value">0</h3><p>Active Promotions</p>
+                <ul id="promotion-names" class="promos"></ul>
+            </div>
+            <div class="card"><i class="fa fa-tasks"></i><h3 id="survey-status-value">0</h3><p>Surveys Due</p></div>
         </div>
 
         <!-- Chart + Promotions -->
@@ -221,34 +219,69 @@
             </div>
             <div class="panel">
                 <h2>Recent Promotions</h2>
-                <ul class="promos">
-                    <li>🎁 Free 5GB Data Pack</li>
-                    <li>🔥 10% Bonus Airtime</li>
-                    <li>📱 Smartphone + 6mo Free Data</li>
-                </ul>
+                <ul id="promotion-names-list" class="promos"></ul>
             </div>
         </div>
     </main>
 
     <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyD3XCHkvMkO5W_hyvntnEuGLqGLMG650uo",
+            authDomain: "hackathonmvp-c888d.firebaseapp.com",
+            databaseURL: "https://hackathonmvp-c888d-default-rtdb.firebaseio.com",
+            projectId: "hackathonmvp-c888d",
+            storageBucket: "hackathonmvp-c888d.appspot.com",
+            messagingSenderId: "638041821853",
+            appId: "1:638041821853:web:53e318afd5e53ff19e3a74"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const rootRef = db.ref('/');
+
+        // Chart setup
         const ctx = document.getElementById('salesChart').getContext('2d');
-        new Chart(ctx, {
+        const salesChart = new Chart(ctx, {
             type: 'line',
-            data: {
-                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-                datasets: [{
-                    label: "Sales",
-                    data: [120, 250, 400, 320, 500, 600],
-                    borderColor: "#3c8dbc",
-                    backgroundColor: "rgba(60,141,188,0.15)",
-                    fill: true,
-                    tension: 0.4,
-                    pointBackgroundColor: "#3c8dbc"
-                }]
-            },
-            options: {
-                plugins: { legend: { labels: { color: '#333' } } },
-                scales: { x: { ticks: { color: '#555' } }, y: { ticks: { color: '#555' } } }
+            data: { labels: [], datasets: [{ label: 'Sales', data: [], borderColor: '#3c8dbc', backgroundColor: 'rgba(60,141,188,0.15)', fill: true, tension: 0.4 }] },
+            options: { plugins: { legend: { labels: { color: '#333' } } }, scales: { x: { ticks: { color: '#555' } }, y: { ticks: { color: '#555' } } } }
+        });
+
+        // Fetch data from Firebase
+        rootRef.on('value', snapshot => {
+            const data = snapshot.val();
+            if (!data) return;
+
+            // Update cards
+            document.getElementById('monthly-sales-value').innerText = `$${data.sales?.monthly || 0}`;
+            document.getElementById('weekly-sales-value').innerText = `$${data.sales?.weekly || 0}`;
+            document.getElementById('active-promotions-value').innerText = data.promotions?.activePromotions || 0;
+            document.getElementById('survey-status-value').innerText = data.survey?.due || 0;
+
+            // Update promotion names (both lists)
+            const promoList1 = document.getElementById('promotion-names');
+            const promoList2 = document.getElementById('promotion-names-list');
+            promoList1.innerHTML = '';
+            promoList2.innerHTML = '';
+            if (data.promotions?.promotionDetails?.length) {
+                data.promotions.promotionDetails.forEach(p => {
+                    const li1 = document.createElement('li');
+                    li1.innerText = `${p.name} (${p.startDate} to ${p.endDate})`;
+                    promoList1.appendChild(li1);
+
+                    const li2 = document.createElement('li');
+                    li2.innerText = `${p.name} (${p.startDate} to ${p.endDate})`;
+                    promoList2.appendChild(li2);
+                });
+            }
+
+            // Update sales chart
+            if (data.sales?.chartData?.length) {
+                salesChart.data.labels = data.sales.chartData.map(d => d.month);
+                salesChart.data.datasets[0].data = data.sales.chartData.map(d => d.amount);
+                salesChart.update();
             }
         });
     </script>
