@@ -133,7 +133,25 @@
                 color: #666;
                 font-size: 0.95rem;
             }
+        .message {
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            border-radius: 12px;
+            max-width: 80%;
+        }
 
+            .message.bot {
+                background: #3c8dbc;
+                color: #fff;
+                align-self: flex-start;
+            }
+
+            .message.user {
+                background: #e0f0fb;
+                color: #333;
+                align-self: flex-end;
+                text-align: right;
+            }
         /* Panels */
         .grid {
             display: grid;
@@ -161,6 +179,24 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr; /* main panel vs side panel */
+            gap: 2rem;
+            margin: 1.5rem 2rem;
+        }
+
+        /* Ensure panels can scroll if needed */
+        .panel {
+            background: #fff;
+            border-radius: 18px;
+            padding: 1.5rem;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            min-height: 400px; /* allows chat panel to expand */
         }
 
         .promo-card {
@@ -246,10 +282,25 @@
 
         <!-- Panels -->
         <div class="grid">
-            <div class="panel">
-                <h2>Sales Overview</h2>
-                <canvas id="salesChart"></canvas>
+            <div class="panel" style="display:flex; flex-direction:column; min-height:400px;">
+                <h2>Distributor Chatbot</h2>
+                <div id="chat-window" style="flex:1; overflow-y:auto; padding:10px; border:1px solid #ddd; border-radius:12px; background:#f9f9f9;">
+                    <!-- Preloaded demo messages -->
+                    <div class="message bot">Hi there! 👋 How can I help you today?</div>
+                    <div class="message user">I’m not sure… How do I get a Rica customer number?</div>
+                    <div class="message bot">Ah, the Rica number is assigned when a customer registers. You need to check the registration system or contact customer support to get it.</div>
+                    <div class="message user">Hmm… And how can I change a customer’s tariff?</div>
+                    <div class="message bot">Changing tariffs requires admin approval. You can submit a tariff change request through the system, and it will be processed once approved.</div>
+                    <div class="message user">Okay, that makes sense. Anything else I should watch out for?</div>
+                    <div class="message bot">Always make sure customer information is verified before making changes. ✅</div>
+                </div>
+                <div style="display:flex; margin-top:8px;">
+                    <input type="text" id="chat-input" placeholder="Type a message..." style="flex:1; padding:8px 12px; border-radius:12px; border:1px solid #ccc; outline:none;">
+                    <button id="send-btn" style="margin-left:8px; padding:8px 12px; border:none; border-radius:12px; background:#3c8dbc; color:#fff;">Send</button>
+                </div>
             </div>
+
+
             <div class="panel">
                 <h2>Recent Promotions</h2>
                 <div id="promotion-cards"></div>
@@ -272,13 +323,40 @@
         const rootRef = db.ref('/');
 
         // Chart setup
-        const ctx = document.getElementById('salesChart').getContext('2d');
-        const salesChart = new Chart(ctx, {
-            type: 'line',
-            data: { labels: [], datasets: [{ label: 'Sales', data: [], borderColor: '#3c8dbc', backgroundColor: 'rgba(60,141,188,0.15)', fill: true, tension: 0.4 }] },
-            options: { plugins: { legend: { labels: { color: '#333' } } }, scales: { x: { ticks: { color: '#555' } }, y: { ticks: { color: '#555' } } } }
-        });
+     
+        const chatWindow = document.getElementById('chat-window');
+        const chatInput = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-btn');
+     
 
+     
+        sendBtn.addEventListener('click', () => {
+            const text = chatInput.value.trim();
+            if (!text) return;
+
+            // Add user message
+            const userMsg = document.createElement('div');
+            userMsg.className = 'message user';
+            userMsg.innerHTML = text;
+            chatWindow.appendChild(userMsg);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+            chatInput.value = '';
+
+            // Simulated bot responses
+            const botMsg = document.createElement('div');
+            botMsg.className = 'message bot';
+
+            if (text.toLowerCase().includes('rica')) {
+                botMsg.innerHTML = "The Rica number is assigned at registration. Check the registration system or contact support to retrieve it.";
+            } else if (text.toLowerCase().includes('tariff')) {
+                botMsg.innerHTML = "Tariff changes need admin approval. Submit a request in the system and wait for processing.";
+            } else {
+                botMsg.innerHTML = "I’m not sure about that. You can check the system or contact support for more details.";
+            }
+
+            chatWindow.appendChild(botMsg);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        });
         // Listen for changes
         rootRef.on('value', snapshot => {
             const data = snapshot.val();
@@ -292,12 +370,7 @@
             document.getElementById('distributor-name').innerHTML = `Welcome, <strong>${data.distributorName || 'Distributor'}</strong>`;
 
             // Update sales chart
-            if (data.sales?.chartData?.length) {
-                salesChart.data.labels = data.sales.chartData.map(d => d.month);
-                salesChart.data.datasets[0].data = data.sales.chartData.map(d => d.amount);
-                salesChart.update();
-            }
-
+        
             // Update Recent Promotions panel
             const promotionCardsEl = document.getElementById('promotion-cards');
             if (promotionCardsEl) {
@@ -307,15 +380,15 @@
                         const card = document.createElement('div');
                         card.className = 'promo-card';
                         card.innerHTML = `
-                        <div class="promo-info">
-                            <h4>${promo.name}</h4>
-                            <p> • Starts: ${promo.startDate}</p>
-                        </div>
-                        <div class="promo-meta">
-                            <p>Ends: ${promo.endDate}</p>
-                            <span>Active</span>
-                        </div>
-                    `;
+                            <div class="promo-info">
+                                <h4>${promo.name}</h4>
+                                <p> • Starts: ${promo.startDate}</p>
+                            </div>
+                            <div class="promo-meta">
+                                <p>Ends: ${promo.endDate}</p>
+                                <span>Active</span>
+                            </div>
+                        `;
                         promotionCardsEl.appendChild(card);
                     });
                 }
