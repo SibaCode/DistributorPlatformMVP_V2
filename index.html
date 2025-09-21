@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sidebar Dashboard</title>
+    <title>Distributor Dashboard</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -12,10 +12,11 @@
 
     <!-- Sidebar -->
     <aside class="sidebar">
-        <h2>BrandDash</h2>
+        <h2>TelkomDash</h2>
         <a href="#"><i class="fas fa-home"></i>Home</a>
-        <a href="#"><i class="fas fa-chart-line"></i>Analytics</a>
-        <a href="#"><i class="fas fa-users"></i>Users</a>
+        <a href="#"><i class="fas fa-tags"></i>Promotions</a>
+        <a href="#"><i class="fas fa-comment-dots"></i>Chatbot</a>
+        <a href="#"><i class="fas fa-comment-alt"></i>Feedback</a>
         <a href="#"><i class="fas fa-cog"></i>Settings</a>
         <a href="#"><i class="fas fa-sign-out-alt"></i>Logout</a>
     </aside>
@@ -25,43 +26,55 @@
         <!-- Navbar -->
         <header class="navbar">
             <div class="toggle-btn" id="toggleBtn"><i class="fas fa-bars"></i></div>
-            <input type="text" placeholder="Search...">
+            <input type="text" placeholder="Search products or promotions...">
         </header>
 
         <!-- Cards -->
         <section class="cards">
             <div class="card">
-                <h3>Total Users</h3>
-                <p class="counter" data-target="1245">0</p>
+                <h3>Total Products</h3>
+                <p class="counter" data-target="320">0</p>
             </div>
             <div class="card">
-                <h3>Revenue</h3>
-                <p class="counter" data-target="12430">0</p>
+                <h3>New Promotions</h3>
+                <p class="counter" data-target="12">0</p>
             </div>
             <div class="card">
-                <h3>Orders</h3>
-                <p class="counter" data-target="345">0</p>
+                <h3>Unread Messages</h3>
+                <p class="counter" data-target="5">0</p>
             </div>
             <div class="card">
                 <h3>Feedbacks</h3>
-                <p class="counter" data-target="123">0</p>
+                <p class="counter" data-target="34">0</p>
             </div>
         </section>
 
-        <!-- Charts & Notifications -->
+        <!-- Promotions & Chatbot -->
         <section class="section">
-            <div class="chart">
-                <canvas id="revenueChart"></canvas>
+            <!-- Promotions list -->
+            <!-- Promotions list -->
+            <div class="promotions">
+                <h3>Recently Added Products</h3>
+                <div class="promotion-grid" id="promotionList">
+                    <!-- Dynamic product cards added by JS -->
+                </div>
             </div>
-            <div class="notifications">
-                <h3>Notifications</h3>
-                <ul>
-                    <li><span>New user registered</span> <i class="fas fa-user-plus"></i></li>
-                    <li><span>Order #345 completed</span> <i class="fas fa-check-circle"></i></li>
-                    <li><span>Server backup successful</span> <i class="fas fa-server"></i></li>
-                    <li><span>New feedback received</span> <i class="fas fa-comment-alt"></i></li>
-                </ul>
+
+
+            <!-- Chatbot -->
+            <!-- Chatbot -->
+            <div class="chatbot">
+                <div class="chat-header">
+                    <div class="chat-title"><i class="fas fa-robot"></i> Distributor Assistant</div>
+                    <div class="chat-status">Online</div>
+                </div>
+                <div class="chat-window" id="chatWindow"></div>
+                <div class="chat-input">
+                    <input type="text" id="chatInput" placeholder="Ask me about promotions, data, or airtime...">
+                    <button id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+                </div>
             </div>
+
         </section>
     </main>
 
