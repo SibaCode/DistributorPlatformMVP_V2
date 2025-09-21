@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distributor Dashboard - Feedback / Survey</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h2>TelkomDash</h2>
+        <nav>
+            <a href="index.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="learning.html"><i class="fas fa-graduation-cap"></i> Learning</a>
+            <a href="#"><i class="fas fa-users"></i> Forum / Community</a>
+            <a href="#"><i class="fas fa-poll"></i> Feedback / Survey</a>
+            <a href="#"><i class="fas fa-box-open"></i> Product Info / Catalog</a>
+            <a href="#"><i class="fas fa-tags"></i> Promotions</a>
+            <a href="#"><i class="fas fa-user-cog"></i> Account Settings</a>
+            <a href="#"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+        </nav>
+    </aside>
+
+    <!-- Main content -->
+    <main class="main">
+        <header class="navbar">
+            <div class="toggle-btn" id="toggleBtn"><i class="fas fa-bars"></i></div>
+            <input type="text" placeholder="Search surveys or feedback...">
+        </header>
+
+        <section class="survey-section">
+            <h2>Feedback / Survey</h2>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="monthly">Monthly Feedback Forms</button>
+                <button class="tab-btn" data-tab="submission">Feedback Submission</button>
+                <button class="tab-btn" data-tab="history">Survey History</button>
+            </div>
+
+            <!-- Tab Contents -->
+            <div class="tab-content active" id="monthly">
+                <form id="monthlyForm">
+                    <label>1. How satisfied are you with Telkom product availability?</label>
+                    <div class="options">
+                        <label><input type="radio" name="q1" value="Very Satisfied" required> Very Satisfied</label>
+                        <label><input type="radio" name="q1" value="Satisfied"> Satisfied</label>
+                        <label><input type="radio" name="q1" value="Neutral"> Neutral</label>
+                        <label><input type="radio" name="q1" value="Dissatisfied"> Dissatisfied</label>
+                    </div>
+
+                    <label>2. How often do you face delays in communication?</label>
+                    <div class="options">
+                        <label><input type="radio" name="q2" value="Never" required> Never</label>
+                        <label><input type="radio" name="q2" value="Rarely"> Rarely</label>
+                        <label><input type="radio" name="q2" value="Sometimes"> Sometimes</label>
+                        <label><input type="radio" name="q2" value="Often"> Often</label>
+                    </div>
+
+                    <label>3. Improvements you would like to see? (Select all that apply)</label>
+                    <div class="options">
+                        <label><input type="checkbox" name="q3" value="Better stock updates"> Better stock updates</label>
+                        <label><input type="checkbox" name="q3" value="Faster communication"> Faster communication</label>
+                        <label><input type="checkbox" name="q3" value="More promotions"> More promotions</label>
+                        <label><input type="checkbox" name="q3" value="Additional training resources"> Additional training resources</label>
+                    </div>
+
+                    <label>4. Additional comments:</label>
+                    <textarea name="q4" placeholder="Write your thoughts here..."></textarea>
+
+                    <button type="submit">Submit Feedback</button>
+                </form>
+            </div>
+
+            <div class="tab-content" id="submission">
+                <form id="submissionForm">
+                    <label>Full Name</label>
+                    <input type="text" id="name" required placeholder="Enter your name">
+
+                    <label>Email</label>
+                    <input type="email" id="email" required placeholder="Enter your email">
+
+                    <label>Feedback</label>
+                    <textarea id="feedback" required placeholder="Your feedback here..."></textarea>
+
+                    <button type="submit">Submit Feedback</button>
+                </form>
+            </div>
+
+            <div class="tab-content" id="history">
+                <h3>Survey History</h3>
+                <div id="historyList">
+                    <!-- Submitted feedbacks appear here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Chatbot -->
+
+    </main>
+
+    <script>
+        // Tab functionality
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById(btn.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Monthly feedback form
+        const monthlyForm = document.getElementById('monthlyForm');
+        const historyList = document.getElementById('historyList');
+
+        monthlyForm.addEventListener('submit', e => {
+            e.preventDefault();
+            const formData = new FormData(monthlyForm);
+            const response = {};
+            formData.forEach((value, key) => {
+                if (response[key]) {
+                    response[key] = Array.isArray(response[key]) ? [...response[key], value] : [response[key], value];
+                } else {
+                    response[key] = value;
+                }
+            });
+            addToHistory(response);
+            monthlyForm.reset();
+        });
+
+        // Feedback submission form
+        const submissionForm = document.getElementById('submissionForm');
+        submissionForm.addEventListener('submit', e => {
+            e.preventDefault();
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const feedback = document.getElementById('feedback').value.trim();
+            if (name && email && feedback) {
+                addToHistory({ q1: name, q2: email, q3: [feedback] });
+                submissionForm.reset();
+            }
+        });
+
+        // Add feedback to history
+        function addToHistory(response) {
+            const card = document.createElement('div');
+            card.classList.add('feedback-item');
+            card.innerHTML = `
+            <p><strong>Full Name:</strong> ${response.q1}</p>
+            <p><strong>Email / Q2:</strong> ${response.q2}</p>
+            <p><strong>Feedback / Q3:</strong> ${response.q3 ? response.q3.join ? response.q3.join(', ') : response.q3 : ''}</p>
+            <p><strong>Additional Comments / Q4:</strong> ${response.q4 || 'N/A'}</p>
+        `;
+            historyList.prepend(card);
+        }
+
+        // Chatbot functionality
+        const chatWindow = document.getElementById('chatWindow');
+        const chatInput = document.getElementById('chatInput');
+        const sendBtn = document.getElementById('sendBtn');
+
+        sendBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
+
+        function sendMessage() {
+            const msg = chatInput.value.trim();
+            if (!msg) return;
+
+            const userMsg = document.createElement('p');
+            userMsg.classList.add('user');
+            userMsg.textContent = msg;
+            chatWindow.appendChild(userMsg);
+            chatInput.value = '';
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+
+            setTimeout(() => {
+                const botMsg = document.createElement('p');
+                botMsg.classList.add('bot');
+                botMsg.textContent = generateReply(msg.toLowerCase());
+                chatWindow.appendChild(botMsg);
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+            }, 500);
+        }
+
+        function generateReply(message) {
+            const greetings = ["Hello! How can I help you today?", "Hi! Ask me about promotions or data bundles.", "Hey! How can I assist?"];
+            const feedbacks = ["You can fill out the survey above.", "Submit your feedback and we will process it."];
+            const help = ["I can help with promotions, data, airtime, or training resources."];
+            const unknown = ["Sorry, I didn't understand. Please ask about promotions, data, or airtime."];
+
+            if (message.includes("hello") || message.includes("hi")) return greetings[Math.floor(Math.random() * greetings.length)];
+            if (message.includes("feedback") || message.includes("survey")) return feedbacks[Math.floor(Math.random() * feedbacks.length)];
+            if (message.includes("help")) return help[Math.floor(Math.random() * help.length)];
+            return unknown[Math.floor(Math.random() * unknown.length)];
+        }
+    </script>
+
+    <style>
+        /* Survey / Feedback styles consistent with dashboard */
+        .survey-section {
+            padding: 20px;
+            background: #f7faff;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+            margin: 20px;
+        }
+
+            .survey-section h2 {
+                color: #3c8dbc;
+                margin-bottom: 15px;
+            }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            background: #e2f0fb;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+            border-radius: 12px 12px 0 0;
+            margin-right: 5px;
+        }
+
+            .tab-btn.active {
+                background: #3c8dbc;
+                color: #fff;
+            }
+
+        .tab-content {
+            display: none;
+            background: #f7faff;
+            padding: 15px;
+            border-radius: 0 0 12px 12px;
+        }
+
+            .tab-content.active {
+                display: block;
+            }
+
+        .survey-section label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: 500;
+        }
+
+        .survey-section input[type="text"], .survey-section input[type="email"], .survey-section textarea {
+            width: 100%;
+            padding: 10px 15px;
+            border-radius: 12px;
+            border: 1px solid #ccc;
+            outline: none;
+            margin-bottom: 15px;
+            font-family: 'Poppins',sans-serif;
+        }
+
+        .survey-section input[type="radio"], .survey-section input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .survey-section .options {
+            margin-bottom: 15px;
+        }
+
+        .survey-section button {
+            padding: 10px 20px;
+            background: #3c8dbc;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+            .survey-section button:hover {
+                background: #5bb1e1;
+            }
+
+        .feedback-item {
+            background: #fff;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+    </style>
+
+</body>
+</html>

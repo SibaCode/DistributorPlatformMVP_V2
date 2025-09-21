@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telkom Distributor Learning Dashboard</title>
+    <style>
+        /* ====== Reset & Fonts ====== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins',sans-serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background: #f7faff;
+            color: #333;
+        }
+
+        /* ====== Sidebar ====== */
+        .sidebar {
+            width: 220px;
+            background: #fff;
+            border-right: 1px solid #e0e0e0;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100%;
+        }
+
+            .sidebar h2 {
+                color: #3c8dbc;
+                font-size: 1.6rem;
+                margin-bottom: 40px;
+                font-weight: 700;
+                text-align: center;
+            }
+
+            .sidebar nav {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .sidebar a {
+                display: flex;
+                align-items: center;
+                margin-bottom: 20px;
+                font-weight: 500;
+                color: #555;
+                padding: 10px 15px;
+                border-radius: 12px;
+                text-decoration: none;
+                transition: 0.3s;
+            }
+
+                .sidebar a i {
+                    margin-right: 15px;
+                    width: 20px;
+                    text-align: center;
+                    color: #3c8dbc;
+                }
+
+                .sidebar a:hover {
+                    color: #fff;
+                    background: #3c8dbc;
+                    box-shadow: 0 4px 15px rgba(60,140,188,0.3);
+                }
+
+        /* ====== Main Content ====== */
+        main {
+            margin-left: 220px;
+            flex-grow: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ====== Learning Page ====== */
+        .learning-page h2 {
+            color: #3c8dbc;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .learning-iframe {
+            width: 100%;
+            flex-grow: 1;
+            min-height: 600px;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+        }
+
+        /* ====== Chatbot ====== */
+        .chatbot {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 350px;
+            max-width: 90%;
+            background: #fdfdfd;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            font-size: 0.9rem;
+        }
+
+        .chat-header {
+            background: #3c8dbc;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+            .chat-header .chat-title i {
+                margin-right: 10px;
+            }
+
+        .chat-status {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .chat-window {
+            flex-grow: 1;
+            background: #edf6fb;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+            .chat-window p {
+                max-width: 75%;
+                padding: 10px 15px;
+                border-radius: 15px;
+                line-height: 1.4;
+                position: relative;
+            }
+
+                .chat-window p.user {
+                    background: #3c8dbc;
+                    color: #fff;
+                    align-self: flex-end;
+                    border-bottom-right-radius: 2px;
+                }
+
+                .chat-window p.bot {
+                    background: #fff;
+                    color: #333;
+                    align-self: flex-start;
+                    border-bottom-left-radius: 2px;
+                    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+                }
+
+        .chat-input {
+            display: flex;
+            padding: 10px 15px;
+            background: #f1faff;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        #chatInput {
+            flex: 1;
+            padding: 10px 15px;
+            border-radius: 15px;
+            border: 1px solid #ccc;
+            outline: none;
+        }
+
+        #sendBtn {
+            margin-left: 10px;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(135deg,#3c8dbc,#5bb1e1);
+            color: #fff;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+            #sendBtn:hover {
+                background: linear-gradient(135deg,#5bb1e1,#3c8dbc);
+            }
+
+        /* ====== Responsive ====== */
+        @media(max-width:900px) {
+            .sidebar {
+                position: fixed;
+                transform: translateX(-100%);
+                z-index: 100;
+                transition: 0.3s;
+            }
+
+                .sidebar.active {
+                    transform: translateX(0);
+                }
+
+            main {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h2>TelkomDash</h2>
+        <nav>
+            <a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="#"><i class="fas fa-graduation-cap"></i> Learning</a>
+            <a href="#"><i class="fas fa-users"></i> Forum / Community</a>
+            <a href="#"><i class="fas fa-poll"></i> Feedback / Survey</a>
+            <a href="#"><i class="fas fa-box-open"></i> Product Info / Catalog</a>
+            <a href="#"><i class="fas fa-tags"></i> Promotions</a>
+            <a href="#"><i class="fas fa-user-cog"></i> Account Settings</a>
+            <a href="#"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main>
+        <section class="learning-page">
+            <h2>Telkom LEARN</h2>
+            <iframe src="https://www.telkomlearn.co.za/" title="Telkom Learn" class="learning-iframe"></iframe>
+        </section>
+    </main>
+
+    <!-- Chatbot -->
+    <div class="chatbot">
+        <div class="chat-header">
+            <div class="chat-title"><i class="fas fa-robot"></i> Distributor Assistant</div>
+            <div class="chat-status">Online</div>
+        </div>
+        <div class="chat-window" id="chatWindow"></div>
+        <div class="chat-input">
+            <input type="text" id="chatInput" placeholder="Ask about promotions, data, or airtime...">
+            <button id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <script>
+        // Chatbot functionality
+        const chatWindow = document.getElementById('chatWindow');
+        const chatInput = document.getElementById('chatInput');
+        const sendBtn = document.getElementById('sendBtn');
+
+        sendBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
+
+        function sendMessage() {
+            const msg = chatInput.value.trim();
+            if (!msg) return;
+
+            // User bubble
+            const userMsg = document.createElement('p');
+            userMsg.classList.add('user');
+            userMsg.textContent = msg;
+            chatWindow.appendChild(userMsg);
+            chatInput.value = '';
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+
+            // Bot reply
+            setTimeout(() => {
+                const botMsg = document.createElement('p');
+                botMsg.classList.add('bot');
+                botMsg.textContent = generateReply(msg.toLowerCase());
+                chatWindow.appendChild(botMsg);
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+            }, 500);
+        }
+
+        // Smart reply generator
+        function generateReply(message) {
+            const greetings = ["Hello! How can I help you today?", "Hi! Ask me about promotions or data bundles.", "Hey! How can I assist?"];
+            const promotions = ["Current promotions: Discounted data bundles, airtime top-ups, and selected smartphones.", "Check Promotions section for active deals."];
+            const stock = ["You can check stock levels in the Promotions section.", "Stock info is available under Promotions."];
+            const help = ["I can help with promotions, data, airtime, or training resources."];
+            const unknown = ["Sorry, I didn't understand. Please ask about promotions, data, or airtime."];
+
+            if (message.includes("hello") || message.includes("hi")) return greetings[Math.floor(Math.random() * greetings.length)];
+            if (message.includes("promo") || message.includes("promotion")) return promotions[Math.floor(Math.random() * promotions.length)];
+            if (message.includes("stock") || message.includes("availability")) return stock[Math.floor(Math.random() * stock.length)];
+            if (message.includes("help")) return help[Math.floor(Math.random() * help.length)];
+            return unknown[Math.floor(Math.random() * unknown.length)];
+        }
+    </script>
+
+</body>
+</html>
