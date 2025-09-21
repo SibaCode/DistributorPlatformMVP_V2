@@ -6,7 +6,6 @@
     <title>Telkom Distributor Platform</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     <style>
@@ -76,14 +75,6 @@
             .navbar .welcome {
                 font-weight: 600;
                 font-size: 1.1rem;
-            }
-
-            .navbar .search input {
-                padding: 8px 14px;
-                border-radius: 12px;
-                border: 1px solid #ddd;
-                outline: none;
-                font-family: inherit;
             }
 
         /* Welcome Section */
@@ -165,21 +156,63 @@
                 color: #3c8dbc;
             }
 
-        .promos li {
-            margin-bottom: 10px;
-            font-size: 0.95rem;
+        /* Promotions Cards */
+        #promotion-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
+
+        .promo-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #e0f0fb, #f0f8ff);
+            transition: box-shadow 0.3s;
+        }
+
+            .promo-card:hover {
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            }
+
+        .promo-info h4 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #3c8dbc;
+        }
+
+        .promo-info p {
+            margin: 4px 0 0 0;
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        .promo-meta {
+            text-align: right;
+            font-size: 0.85rem;
+            color: #333;
+        }
+
+            .promo-meta span {
+                display: inline-block;
+                margin-top: 4px;
+                padding: 2px 6px;
+                border-radius: 8px;
+                background-color: #3c8dbc;
+                color: #fff;
+                font-size: 0.75rem;
+            }
     </style>
 </head>
 <body>
 
     <!-- Sidebar -->
     <aside class="sidebar">
-        <h2 style="line-height: 1; font-family: 'Poppins', sans-serif;">
-            <span style="font-weight: bold; font-size: 1em;">DISTRIBUTOR</span>
-            <span style="font-weight: normal; font-size: 1em; margin-left: 2px;">Platform</span>
-        </h2>
-
+        <h2><span style="font-weight:bold;">DISTRIBUTOR</span> <span style="font-weight:normal; margin-left:2px;">Platform</span></h2>
         <a href="#" class="active"><i class="fa fa-home"></i> Dashboard</a>
         <a href="#"><i class="fa fa-graduation-cap"></i> Learning</a>
         <a href="#"><i class="fa fa-users"></i> Community</a>
@@ -197,24 +230,21 @@
             <div class="welcome" id="distributor-name">Welcome, <strong></strong></div>
         </div>
 
-        <!-- Welcome / Instructions -->
+        <!-- Welcome Section -->
         <div class="welcome-section">
             <h1>👋 Welcome to Telkom Distributor Platform</h1>
             <p>Here you can check new promotions, access products, submit feedback, and track learning progress. Use the sidebar to navigate through the platform.</p>
         </div>
 
-        <!-- Statistic Cards -->
+        <!-- Cards -->
         <div class="cards">
             <div class="card"><i class="fa fa-line-chart"></i><h3 id="monthly-sales-value"></h3><p>Monthly Sales</p></div>
             <div class="card"><i class="fa fa-bar-chart"></i><h3 id="weekly-sales-value"></h3><p>Weekly Sales</p></div>
-            <div class="card">
-                <i class="fa fa-tags"></i><h3 id="active-promotions-value"></h3><p>Active Promotions</p>
-                <ul id="promotion-names" class="promos"></ul>
-            </div>
+            <div class="card"><i class="fa fa-tags"></i><h3 id="active-promotions-value"></h3><p>Active Promotions</p></div>
             <div class="card"><i class="fa fa-tasks"></i><h3 id="survey-status-value"></h3><p>Surveys Due</p></div>
         </div>
 
-        <!-- Chart + Promotions -->
+        <!-- Panels -->
         <div class="grid">
             <div class="panel">
                 <h2>Sales Overview</h2>
@@ -222,13 +252,12 @@
             </div>
             <div class="panel">
                 <h2>Recent Promotions</h2>
-                <ul id="promotion-names-list" class="promos"></ul>
+                <div id="promotion-cards"></div>
             </div>
         </div>
     </main>
 
     <script>
-        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyD3XCHkvMkO5W_hyvntnEuGLqGLMG650uo",
             authDomain: "hackathonmvp-c888d.firebaseapp.com",
@@ -238,9 +267,7 @@
             messagingSenderId: "638041821853",
             appId: "1:638041821853:web:53e318afd5e53ff19e3a74"
         };
-
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
+        firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
         const rootRef = db.ref('/');
 
@@ -252,36 +279,46 @@
             options: { plugins: { legend: { labels: { color: '#333' } } }, scales: { x: { ticks: { color: '#555' } }, y: { ticks: { color: '#555' } } } }
         });
 
-        // Fetch data from Firebase
+        // Listen for changes
         rootRef.on('value', snapshot => {
             const data = snapshot.val();
             if (!data) return;
 
-            // Update cards
-            //document.getElementById('monthly-sales-value').innerText = `${data.sales?.monthly || 0}`;
-            //document.getElementById('weekly-sales-value').innerText = `${data.sales?.weekly || 0}`;
-            //document.getElementById('active-promotions-value').innerText = data.promotions?.activePromotions || 0;
-            //document.getElementById('survey-status-value').innerText = data.survey?.due || 0;
-            // Update cards
-            document.getElementById('monthly-sales-value').innerText = `${data.sales?.monthly || 0}`;
-            document.getElementById('weekly-sales-value').innerText = `${data.sales?.weekly || 0}`;
-
-            // Show only the active promotions number
+            // Update dashboard cards
+            document.getElementById('monthly-sales-value').innerText = data.sales?.monthly || 0;
+            document.getElementById('weekly-sales-value').innerText = data.sales?.weekly || 0;
             document.getElementById('active-promotions-value').innerText = data.promotions?.activePromotions || 0;
-
-            // Surveys
             document.getElementById('survey-status-value').innerText = data.survey?.due || 0;
             document.getElementById('distributor-name').innerHTML = `Welcome, <strong>${data.distributorName || 'Distributor'}</strong>`;
-
-            // Update promotions panel to show only the number
-            document.getElementById('promotion-names-list').innerText = data.promotions?.activePromotions || 0;
-
 
             // Update sales chart
             if (data.sales?.chartData?.length) {
                 salesChart.data.labels = data.sales.chartData.map(d => d.month);
                 salesChart.data.datasets[0].data = data.sales.chartData.map(d => d.amount);
                 salesChart.update();
+            }
+
+            // Update Recent Promotions panel
+            const promotionCardsEl = document.getElementById('promotion-cards');
+            if (promotionCardsEl) {
+                promotionCardsEl.innerHTML = '';
+                if (data.promotions?.promotionDetails) {
+                    data.promotions.promotionDetails.forEach(promo => {
+                        const card = document.createElement('div');
+                        card.className = 'promo-card';
+                        card.innerHTML = `
+                        <div class="promo-info">
+                            <h4>${promo.name}</h4>
+                            <p> • Starts: ${promo.startDate}</p>
+                        </div>
+                        <div class="promo-meta">
+                            <p>Ends: ${promo.endDate}</p>
+                            <span>Active</span>
+                        </div>
+                    `;
+                        promotionCardsEl.appendChild(card);
+                    });
+                }
             }
         });
     </script>
