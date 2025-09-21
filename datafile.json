@@ -35,6 +35,26 @@
       }
     ]
   },
+  "profile": {
+    "name": "John Doe",
+    "email": "john.doe@example.com",
+    "distributorId": "D12345",
+    "subscription": "Premium",
+    "invoices": [
+      {
+        "invoiceNumber": "INV-1001",
+        "date": "2025-09-01",
+        "amount": 500,
+        "downloadLink": "#"
+      },
+      {
+        "invoiceNumber": "INV-1002",
+        "date": "2025-09-15",
+        "amount": 300,
+        "downloadLink": "#"
+      }
+    ]
+  },
   "promotions": {
     "activePromotions": 3,
     "promotionDetails": [
@@ -57,5 +77,5 @@
         "endDate": "2025-09-25"
       }
     ]
-  },
+  }
 }

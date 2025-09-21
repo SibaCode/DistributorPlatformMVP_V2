@@ -249,9 +249,9 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <h2><span style="font-weight:bold;">DISTRIBUTOR</span> <span style="font-weight:normal; margin-left:2px;">Platform</span></h2>
-        <a href="index.html"><i class="fa fa-home"></i> Dashboard</a>
-        <a href="learning.html" class="active"><i class="fa fa-graduation-cap"></i> Learning</a>
-        <a href="feedback.html"><i class="fa fa-poll"></i> Feedback</a>
+        <a href="index.html"  class="active"><i class="fa fa-home"></i> Dashboard</a>
+        <a href="learning.html"><i class="fa fa-graduation-cap"></i> Learning</a>
+        <a href="feedback.html"><i class="fa fa-user"></i> Surveys</a>
         <a href=""><i class="fa fa-sign-out"></i> Log Out</a>
     </aside>
 
@@ -305,15 +305,7 @@
     </main>
 
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyD3XCHkvMkO5W_hyvntnEuGLqGLMG650uo",
-            authDomain: "hackathonmvp-c888d.firebaseapp.com",
-            databaseURL: "https://hackathonmvp-c888d-default-rtdb.firebaseio.com",
-            projectId: "hackathonmvp-c888d",
-            storageBucket: "hackathonmvp-c888d.appspot.com",
-            messagingSenderId: "638041821853",
-            appId: "1:638041821853:web:53e318afd5e53ff19e3a74"
-        };
+     
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
         const rootRef = db.ref('/');

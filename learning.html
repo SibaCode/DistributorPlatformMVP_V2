@@ -156,6 +156,25 @@
             .course-btn:hover {
                 background: #5bb1e1;
             }
+
+        /* Chat messages */
+        .message {
+            margin-bottom: 8px;
+            padding: 8px 12px;
+            border-radius: 12px;
+            max-width: 80%;
+        }
+
+            .message.bot {
+                background: #e2f0fb;
+                align-self: flex-start;
+            }
+
+            .message.user {
+                background: #3c8dbc;
+                color: #fff;
+                align-self: flex-end;
+            }
     </style>
 </head>
 <body>
@@ -163,17 +182,17 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <h2><strong>DISTRIBUTOR</strong> Platform</h2>
-        <a href="index.html"><i class="fa fa-home"></i> Dashboard</a>
+        <a href="index.html" ><i class="fa fa-home"></i> Dashboard</a>
         <a href="learning.html" class="active"><i class="fa fa-graduation-cap"></i> Learning</a>
-        <a href="feedback.html"><i class="fa fa-poll"></i> Feedback</a>
-        <a ><i class="fa fa-sign-out"></i> Log Out</a>
+        <a href="feedback.html"><i class="fa fa-user"></i> Surveys</a>
+        <a href=""><i class="fa fa-sign-out"></i> Log Out</a>
     </aside>
 
     <!-- Main -->
     <main class="main">
         <!-- Navbar -->
         <div class="navbar">
-            <div class="welcome" id="distributor-name">Welcome, <strong>Distributor</strong></div>
+            <div class="welcome" id="distributor-name">Welcome, <strong></strong></div>
         </div>
 
         <!-- Panels Grid -->
@@ -182,8 +201,14 @@
             <div class="panel">
                 <h2>Telkom LEARN Courses</h2>
                 <p class="powered">Powered by <strong>Telkom Learn</strong></p>
-                <input type="text" id="courseSearch" placeholder="Search courses..." style="padding:6px 10px; margin-bottom:10px; border-radius:8px; border:1px solid #ccc; outline:none;">
-                <div class="courses-grid" id="coursesGrid"></div>
+
+                <!-- Telkom Learn Image -->
+                <div style="text-align:center; margin-bottom: 10px;">
+                    <img src="learn.png" alt="Telkom Learn" style="max-width:100%; border-radius:12px;">
+                </div>
+
+                <!--<input type="text" id="courseSearch" placeholder="Search courses..." style="padding:6px 10px; margin-bottom:10px; border-radius:8px; border:1px solid #ccc; outline:none;">-->
+                <!--<div class="courses-grid" id="c/oursesGrid"></div>-->
             </div>
 
             <!-- Chatbot Panel -->
@@ -201,6 +226,7 @@
     </main>
 
     <script>
+
         // Mock courses data
         const courses = [
             { id: 1, title: "Telkom Product Basics", status: "Not Started" },
@@ -220,11 +246,11 @@
                 const card = document.createElement('div');
                 card.className = 'course-card';
                 card.innerHTML = `
-                        <h4>${course.title}</h4>
-                        <div class="progress-bar"><div class="progress" style="width:${progress}%"></div></div>
-                        <p>${course.status} (${progress}%)</p>
-                        <a href="#" class="course-btn">${course.status === "Not Started" ? "Start Course" : "Continue"}</a>
-                    `;
+                            <h4>${course.title}</h4>
+                            <div class="progress-bar"><div class="progress" style="width:${progress}%"></div></div>
+                            <p>${course.status} (${progress}%)</p>
+                            <a href="#" class="course-btn">${course.status === "Not Started" ? "Start Course" : "Continue"}</a>
+                        `;
                 coursesGrid.appendChild(card);
             });
         }
@@ -246,13 +272,16 @@
         function sendMessage() {
             const msg = chatInput.value.trim();
             if (!msg) return;
-            const userMsg = document.createElement('div'); userMsg.classList.add('message', 'user'); userMsg.textContent = msg;
+            const userMsg = document.createElement('div');
+            userMsg.classList.add('message', 'user');
+            userMsg.textContent = msg;
             chatWindow.appendChild(userMsg);
             chatInput.value = '';
             chatWindow.scrollTop = chatWindow.scrollHeight;
 
             setTimeout(() => {
-                const botMsg = document.createElement('div'); botMsg.classList.add('message', 'bot');
+                const botMsg = document.createElement('div');
+                botMsg.classList.add('message', 'bot');
                 botMsg.textContent = generateReply(msg.toLowerCase());
                 chatWindow.appendChild(botMsg);
                 chatWindow.scrollTop = chatWindow.scrollHeight;
